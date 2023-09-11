@@ -2,54 +2,65 @@ import Image from "next/image";
 import { Inter } from "next/font/google";
 import Card from "@/components/card";
 import HomeHeader from "@/components/homeHeader";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import FeaturedMovies from "@/components/featuredMovies";
+import SearchedMovies from "@/components/searchedMovies";
+import Loader from "@/components/loader";
 
 export default function Home(props) {
-  const [searchResult, setSearchResult] = useState([]);
+  const [result, setResult] = useState({
+    isError: false,
+    searchResult: [],
+    error: "",
+  });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const debouceInput = useCallback((func, time = 4000) => {
-    let timer;
+  const [serachQuery, setSearchQuery] = useState("");
+  const updateQuery = (val) => {
+    setSearchQuery(val);
+  };
 
-    return function (...args) {
-      if (timer) {
-        console.log("clearing timer");
-        clearTimeout(time);
+  useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    const searchMovies = async () => {
+      try {
+        setLoading(true);
+
+        if (!serachQuery) {
+          setResult({
+            error: "",
+            isError: false,
+            searchResult: [],
+          });
+          return;
+        }
+        console.log("searching");
+        const res = await fetch(
+          `https://api.themoviedb.org/3/search/movie?query=${serachQuery}&include_adult=false&language=en-US&api_key=${process.env.NEXT_PUBLIC_API_KEY}`,
+          { signal }
+        );
+        console.log(serachQuery);
+        const data = await res.json();
+
+        setResult({
+          isError: false,
+          searchResult: data?.results,
+          error: "",
+        });
+      } catch (error) {
+        setResult({
+          isError: true,
+          searchResult: [],
+          error: error.message,
+        });
+      } finally {
+        setLoading(false);
       }
-      timer = setTimeout(() => {
-        func.apply(null, args);
-      }, time);
     };
-  }, []);
-  const searchMovies = useCallback(async (value) => {
-    try {
-      setLoading(true);
-      if (value.trim().length === 0) {
-        setSearchResult([]);
-        return;
-      }
-
-      const res = await fetch(
-        `https://api.themoviedb.org/3/search/movie?query=${value.toLowerCase()}&include_adult=false&language=en-US&api_key=${
-          process.env.NEXT_PUBLIC_API_KEY
-        }`
-      );
-      console.log("working");
-      const data = await res.json();
-      console.log(data);
-      setSearchResult(data?.results);
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-  // The function to debounce the user input
-  const searchFn = useMemo(
-    () => debouceInput(searchMovies),
-    [debouceInput, searchMovies]
-  );
+    searchMovies();
+    return () => controller.abort();
+  }, [serachQuery]);
   if (props?.success === false) {
     return (
       <main>
@@ -58,20 +69,24 @@ export default function Home(props) {
       </main>
     );
   }
-
   return (
     <>
-      <HomeHeader onChange={searchFn} />
-      <main className="font-dmSans">
-        <FeaturedMovies movies={props.results.slice(0, 10)} />
+      <HomeHeader onChange={updateQuery} movie={props.results[0]} />
+      <main className="font-dmSans relative">
+        {loading && <Loader />}
+        {result.searchResult.length === 0 ? (
+          <FeaturedMovies movies={props.results.slice(0, 10)} />
+        ) : (
+          <SearchedMovies movies={result.searchResult} />
+        )}
       </main>
     </>
   );
 }
 
-export const getServerSideProps = async () => {
+export const getStaticProps = async () => {
   const res = await fetch(
-    `https://api.themoviedb.org/3/movie/top_rated?language=en-US&api_key=${process.env.NEXT_PUBLIC_API_KEY}`,
+    `https://api.themoviedb.org/3/movie/popular?language=en-US&api_key=${process.env.NEXT_PUBLIC_API_KEY}`,
     {
       headers: {
         accept: "application/json",
@@ -84,5 +99,6 @@ export const getServerSideProps = async () => {
 
   return {
     props: data,
+    revalidate: 60,
   };
 };

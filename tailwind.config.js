@@ -16,9 +16,12 @@ module.exports = {
         dmSans: ["var(--font-dm-sans)"],
         poppins: ["var(---font-poppins)"],
       },
-      color: {
+      colors: {
         gray40: "#9CA3AF",
         gray90: "#111827",
+        grey30: "rgba(243, 244, 246, 0.50)",
+        "grey-300": "#D1D5DB",
+        "rose/700": "#BE123C",
       },
     },
   },

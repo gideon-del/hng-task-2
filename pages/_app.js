@@ -9,7 +9,7 @@ const poppins = Poppins({
   subsets: ["latin"],
   display: "swap",
   variable: ["--font-poppins"],
-  weight: ["700", "400", "500"],
+  weight: ["700", "400", "500", "600"],
 });
 export default function App({ Component, pageProps }) {
   return (
