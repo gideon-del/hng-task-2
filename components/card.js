@@ -39,7 +39,10 @@ const Card = ({ title, poster_path, release_date, id }) => {
   }, [id]);
   return (
     <>
-      <article data-testid="movie-card" className={`flex flex-col gap-3 `}>
+      <article
+        data-testid="movie-card"
+        className={`flex flex-col gap-3 w-fit mx-auto`}
+      >
         <figure className="grid-stack w-fit">
           <Image
             src={`https://image.tmdb.org/t/p/original${poster_path}`}

@@ -22,6 +22,7 @@ module.exports = {
         grey30: "rgba(243, 244, 246, 0.50)",
         "grey-300": "#D1D5DB",
         "rose/700": "#BE123C",
+        gray50: "#6B7280",
       },
     },
   },

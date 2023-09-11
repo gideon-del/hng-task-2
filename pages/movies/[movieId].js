@@ -22,9 +22,9 @@ const MovieDetail = ({ movie }) => {
       date.getUTCMilliseconds()
     );
   return (
-    <div className="flex gap-9">
+    <div className="flex flex-col md:flex-row gap-9">
       <MovieHeader />
-      <main className="py-5 font-poppins font-medium basis-3/4 ">
+      <main className="py-5 font-poppins font-medium basis-3/4 px-5 ">
         {movie ? (
           <>
             <figure className="mb-9">
@@ -53,7 +53,7 @@ const MovieDetail = ({ movie }) => {
                 ))}
               </div>
               <p
-                className="font-normal text-[#333] text-xl max-w-3xl mb-9"
+                className="font-normal text-[#333] md:text-xl  text-base max-w-3xl mb-9"
                 data-testid="movie-overview"
               >
                 {movie.overview}
