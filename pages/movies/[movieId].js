@@ -92,7 +92,6 @@ export async function getServerSideProps({ query }) {
     `https://api.themoviedb.org/3/movie/${id}?language=en-US&api_key=${process.env.NEXT_PUBLIC_API_KEY}`
   );
   const mainMovie = await res_2.json();
-  console.log(mainMovie);
   return {
     props: {
       movie: mainMovie,
