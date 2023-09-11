@@ -40,8 +40,10 @@ const MovieDetail = ({ movie }) => {
               <div className="flex items-center gap-4 flex-wrap mb-6">
                 <h2 className="text-[#404040] lg:text-2xl">
                   <span data-testid="movie-title">{movie.title}</span> .{" "}
-                  <span>{new Date(utcDate).toISOString()}</span> .{" "}
-                  <span data-testid="movie-runtime">{movie.runtime}</span>{" "}
+                  <span data-testid="movie-release-date">
+                    {new Date(utcDate).toISOString()}
+                  </span>{" "}
+                  . <span data-testid="movie-runtime">{movie.runtime}</span>{" "}
                 </h2>
                 {movie.genres.map((genre) => (
                   <button
@@ -75,6 +77,7 @@ const MovieDetail = ({ movie }) => {
 };
 
 export default MovieDetail;
+// Fetching the movie with imdb_id
 export async function getServerSideProps({ query }) {
   const res = await fetch(
     `https://api.themoviedb.org/3/find/${query.movieId}?external_source=imdb_id&api_key=${process.env.NEXT_PUBLIC_API_KEY}`

@@ -12,6 +12,7 @@ export default function Home(props) {
     error: "",
   });
   const [loading, setLoading] = useState(false);
+  // the search value of the input
   const [serachQuery, setSearchQuery] = useState("");
   const updateQuery = (val) => {
     setSearchQuery(val);
@@ -33,7 +34,7 @@ export default function Home(props) {
           });
           return;
         }
-        console.log("searching");
+
         const res = await fetch(
           `https://api.themoviedb.org/3/search/movie?query=${serachQuery}&include_adult=false&language=en-US&api_key=${process.env.NEXT_PUBLIC_API_KEY}`,
           { signal }
@@ -72,10 +73,16 @@ export default function Home(props) {
       <HomeHeader onChange={updateQuery} movie={props.results[0]} />
       <main className="font-dmSans relative md:mb-28">
         {loading && <Loader />}
-        {result.searchResult.length === 0 ? (
-          <FeaturedMovies movies={props.results.slice(0, 10)} />
+        {result.isError ? (
+          <p className="font-bold text-2xl"> {result.error}</p>
         ) : (
-          <SearchedMovies movies={result.searchResult} />
+          <>
+            {result.searchResult.length === 0 ? (
+              <FeaturedMovies movies={props.results.slice(0, 10)} />
+            ) : (
+              <SearchedMovies movies={result.searchResult} />
+            )}
+          </>
         )}
       </main>
       <footer className="md:px-6 px-2 py-20 font-bold text-gray90 flex flex-col gap-11">
