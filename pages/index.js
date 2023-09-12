@@ -5,6 +5,7 @@ import SearchedMovies from "@/components/searchedMovies";
 import Loader from "@/components/loader";
 import { AiFillFacebook } from "react-icons/ai";
 import { BsInstagram, BsTwitter, BsYoutube } from "react-icons/bs";
+import FavouriteMovie from "@/components/favoriteMovies";
 export default function Home(props) {
   const [result, setResult] = useState({
     isError: false,
@@ -84,6 +85,7 @@ export default function Home(props) {
             )}
           </>
         )}
+        <FavouriteMovie />
       </main>
       <footer className="md:px-6 px-2 py-20 font-bold text-gray90 flex flex-col gap-11">
         <div className="md:text-3xl text-xl flex justify-center items-center gap-12">

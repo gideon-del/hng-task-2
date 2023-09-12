@@ -1,5 +1,6 @@
 import React from "react";
-import Card from "./card";
+
+import GridCard from "./gridCard";
 
 const FeaturedMovies = ({ movies }) => {
   return (
@@ -8,11 +9,7 @@ const FeaturedMovies = ({ movies }) => {
         Featured Movie
       </h2>
 
-      <div className="flexible-grid lg:gap-y-9 gap-10 md:gap-5  items-center ">
-        {movies.map((movie) => (
-          <Card key={movie.id} {...movie} />
-        ))}
-      </div>
+      <GridCard movies={movies} />
     </section>
   );
 };
