@@ -9,23 +9,22 @@ const MovieDetail = ({ movie }) => {
   const {
     query: { movieId },
   } = useRouter();
-  const date = movie && new Date(movie.release_date);
-  const utcDate =
-    date &&
-    Date.UTC(
-      date.getUTCFullYear(),
-      date.getUTCMonth(),
-      date.getUTCDay(),
-      date.getUTCHours(),
-      date.getUTCMinutes(),
-      date.getUTCSeconds(),
-      date.getUTCMilliseconds()
-    );
+
+  const date = new Date(movie?.release_date || Date.now());
+  const utcDate = Date.UTC(
+    date.getUTCFullYear(),
+    date.getUTCMonth(),
+    date.getUTCDay(),
+    date.getUTCHours(),
+    date.getUTCMinutes(),
+    date.getUTCSeconds(),
+    date.getUTCMilliseconds()
+  );
   return (
     <div className="flex flex-col md:flex-row gap-9">
       <MovieHeader />
       <main className="py-5 font-poppins font-medium basis-3/4 px-5 ">
-        {movie ? (
+        {!movie.hasOwnProperty("success") ? (
           <>
             <figure className="mb-9">
               <Image
@@ -79,7 +78,6 @@ const MovieDetail = ({ movie }) => {
 export default MovieDetail;
 // Fetching the movie with imdb_id
 export async function getServerSideProps({ query }) {
-
   const res_2 = await fetch(
     `https://api.themoviedb.org/3/movie/${query.movieId}?language=en-US&api_key=${process.env.NEXT_PUBLIC_API_KEY}`
   );
