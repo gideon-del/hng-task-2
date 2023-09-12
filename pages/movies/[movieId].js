@@ -28,11 +28,11 @@ const MovieDetail = ({ movie }) => {
           <>
             <figure className="mb-9">
               <Image
-                src={vid}
+                src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
                 alt={"poster"}
-                // width={500}
-                // height={600}
-                className="max-h-[500px] object-contain mx-auto"
+                width={500}
+                height={600}
+                className="max-h-[500px] w-full object-contain object-center mx-auto"
               />
             </figure>
             <section>
