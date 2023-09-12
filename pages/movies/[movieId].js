@@ -79,20 +79,9 @@ const MovieDetail = ({ movie }) => {
 export default MovieDetail;
 // Fetching the movie with imdb_id
 export async function getServerSideProps({ query }) {
-  const res = await fetch(
-    `https://api.themoviedb.org/3/find/${query.movieId}?external_source=imdb_id&api_key=${process.env.NEXT_PUBLIC_API_KEY}`
-  );
-  const data = await res.json();
-  if (data.movie_results.length === 0) {
-    return {
-      props: {
-        movie: null,
-      },
-    };
-  }
-  const id = data.movie_results[0]?.id;
+
   const res_2 = await fetch(
-    `https://api.themoviedb.org/3/movie/${id}?language=en-US&api_key=${process.env.NEXT_PUBLIC_API_KEY}`
+    `https://api.themoviedb.org/3/movie/${query.movieId}?language=en-US&api_key=${process.env.NEXT_PUBLIC_API_KEY}`
   );
   const mainMovie = await res_2.json();
   return {

@@ -109,11 +109,10 @@ export default function Home(props) {
 
 export const getStaticProps = async () => {
   const res = await fetch(
-    `https://api.themoviedb.org/3/movie/popular?language=en-US&api_key=${process.env.NEXT_PUBLIC_API_KEY}`,
+    `https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1&api_key=${process.env.NEXT_PUBLIC_API_KEY}`,
     {
       headers: {
         accept: "application/json",
-        Authorization: `Bearer 0d993324e1f0ebbd848f1f4b2b9afe11`,
       },
     }
   );
