@@ -40,7 +40,7 @@ export default function Home(props) {
           `https://api.themoviedb.org/3/search/movie?query=${serachQuery}&include_adult=false&language=en-US&api_key=${process.env.NEXT_PUBLIC_API_KEY}`,
           { signal }
         );
-        console.log(serachQuery);
+       
         const data = await res.json();
 
         setResult({
